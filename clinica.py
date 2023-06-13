@@ -1,4 +1,11 @@
-patients = [{"nome": "Luis", "telefone": "98991842214"}]
+patients = [
+    {"nome": "Luis", "telefone": "98991842214"},
+    {"nome": "Marcos", "telefone": "98991843321"},
+    {"nome": "Danilo", "telefone": "98987842214"}
+    ]
+schedules = [
+    {"paciente": "Luis", "dia": "12/07", "hora": "14:50", "especialidade": "Cardiologista"}
+]
 
 def menu():
     print("\n=========Clinica Ágil=========")
@@ -12,31 +19,54 @@ def registerPatient():
     print("Forneça as informações abaixo:")
 
     patient = {}
-    patient["Nome"] = input("Nome do paciente: ").strip().title()
-    patient["Telefone"] = input("Telefone do paciente: ").strip()
-    print("Paciente cadastrado com sucesso!")
+    patient["nome"] = input("Nome do paciente: ").strip().title()
+    patient["telefone"] = input("Telefone do paciente: ").strip()
 
-    patients.append(patient)
+    print(patient["telefone"])
 
-def listPatients():
+    for i in patients:
+        if i.get("telefone") == patient["telefone"]:
+            print("Paciente já cadastrado")
+            break
+        else:
+            patients.append(patient)
+            print("Paciente cadastrado com sucesso!")
+            break
+
+def listArray(list, type):
     index = 0
 
-    for patient in patients:
-        print(f"Paciente: {index}", end=" - ")
+    for i in list:
+        if type == "pacientes":
+            print(f"Paciente: {index}", end=" - ")
+        elif type == "agendamentos":
+            print(f"Agendamento: {index}", end=" - ")
         index += 1
 
-        for key, value in patient.items():
-          print(f"{key}: {value}", end=" - ")
+        for key, value in i.items():
+          print(f"{key.title()}: {value}", end=" - ")
         print("\n")
 
 def consultationAppointments():
-    listPatients()
+    listArray(patients, "pacientes")
 
     print("Selecione o paciente para agendar a consulta")
     option = int(input("Número do paciente: "))
 
+    consulta = {}
+    consulta['paciente'] = patients[option]["Nome"]
+    consulta['dia'] = input("Digite o dia da consulta (dd/mm): ")
+    consulta['hora'] = input("Digite a hora da consulta (00:00): ")
+    consulta['especialidade'] = input("Digite a especialidade: ")
 
+    schedules.append(consulta)
+
+    print(schedules)
+
+def cancellationAppointments():
+    listArray(schedules, "agendamentos")
     
+
 while True:
     menu()
     option = int(input("Escolha uma opção: "))
@@ -51,7 +81,7 @@ while True:
         consultationAppointments()
     
     elif option == 3:
-        break
+        cancellationAppointments()
     
     elif option == 0:
         break
